@@ -37,7 +37,7 @@ def edit(name):
   logging.error("FIXME: Unimplemented - edit{!r}".format(name))
 
 def delete(name):
-  """Delete snippent with a given name.
+  """Delete snippet with a given name.
   
   If there is no such snippet, throw an error to that affect.
   
@@ -46,4 +46,12 @@ def delete(name):
   
   logging.error("FIXME: Unimplemented - delete{!r}".format(name))
   
+  
+def rename(name):
+  """Rename snippet with a given name.
+  
+  If there is no such snippet, throw an error to that affect.
+  
+  Returns the new snippet.
+  """
   
