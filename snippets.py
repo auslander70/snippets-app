@@ -13,3 +13,15 @@ def put(name, snippet):
     return name, snippet
     
     
+def get(name):
+  """Retrieve the snippet with a given name.
+  
+  If there no such snippet....
+  
+  Returns the snippet.
+  """
+  
+  logging.error("FIXME: Unimplemented - get{!r})".format(name))
+  return ""
+  
+  
