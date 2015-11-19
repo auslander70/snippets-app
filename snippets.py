@@ -23,7 +23,6 @@ def get(name):
   
   Returns the snippet.
   """
-  
   logging.error("FIXME: Unimplemented - get{!r})".format(name))
   return ""
   
@@ -36,8 +35,9 @@ def edit(name):
   
   Returns the snippet.
   """
-  
   logging.error("FIXME: Unimplemented - edit{!r}".format(name))
+  return name
+  
 
 def delete(name):
   """Delete snippet with a given name.
@@ -57,6 +57,8 @@ def rename(name):
   
   Returns the new snippet.
   """
+  
+  logging.error("FIXME: Unimplemented - rename{!r}".format(name))
   
   
 def main():
