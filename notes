@@ -1,0 +1,15 @@
+# postgres queries:
+
+snippets=> select keyword from snippets;
+ keyword  
+----------
+ insert
+ relax
+ escaping
+(3 rows)
+
+
+
+select * from snippets where keyword = 'escaping';
+
+
