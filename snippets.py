@@ -38,10 +38,16 @@ def get(name):
   cursor = connection.cursor()
   command = "select keyword, message from snippets where keyword = %s"
   cursor.execute(command, (name,))
-  cursor.fetchone()
-  logging.debug("Snippet {} retrieved successfully.".format(name))
-  
-  return name
+  record = cursor.fetchone()
+
+  if not record:
+    # No snippet was found with that name.
+    logging.warning("No snippet with name = {} found!".format(name))
+    raise KeyError("No snippet with name \'{}\' found.".format(name))
+  else:
+    print(record[0], record[1])
+    logging.debug("Snippet {} retrieved successfully.".format(name))
+    return record[0]
   
 
 def edit(name):
