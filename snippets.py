@@ -20,8 +20,14 @@ def put(name, snippet):
     Returns the name and the snippet
     """
     cursor = connection.cursor()
-    command = "insert into snippets values (%s, %s)"
-    cursor.execute(command, (name, snippet))
+    try:
+      command = "insert into snippets values (%s, %s)"
+      cursor.execute(command, (name, snippet))
+    except psycopg2.IntegrityError as e:
+      connection.rollback()
+      command = "update snippets set message=%s where keyword=%s"
+      cursor.execute(command, (snippet, name))
+
     connection.commit()
     logging.debug("Snippet {} stored successfully.".format(name))
     
@@ -43,7 +49,7 @@ def get(name):
   if not record:
     # No snippet was found with that name.
     logging.warning("No snippet with name = {} found!".format(name))
-    raise KeyError("No snippet with name \'{}\' found.".format(name))
+    print("No snippet with name = {} found.".format(name))
   else:
     print(record[0], record[1])
     logging.debug("Snippet {} retrieved successfully.".format(name))
