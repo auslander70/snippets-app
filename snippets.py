@@ -13,8 +13,7 @@ connection = psycopg2.connect(database="snippets")
 logging.debug("Database connection established.")
 
 def catalog():
-  """
-  List snippet keywords (names)
+  """List snippet keywords (names)
   
   Returns snippet names.
   """
@@ -25,8 +24,7 @@ def catalog():
   
   
 def put(name, snippet):
-    """
-    Store a snippet with an associated name.
+    """Store a snippet with an associated name.
 
     Returns the name and the snippet
     """
@@ -97,6 +95,17 @@ def rename(name):
   
   logging.error("FIXME: Unimplemented - rename{!r}".format(name))
   
+
+def search(text):
+  """Retrieve snippets that contain a piece of text.
+  
+  Returns a dict of keywords, snippets.
+  """
+  with connection, connection.cursor() as cursor:
+    cursor.execute("select keyword, message from snippets where keyword like '%{}%' or message like '%{}%'".format(text, text))
+    records = cursor.fetchall()
+  return records
+  
   
 def main():
   """Main function"""
@@ -118,7 +127,13 @@ def main():
 
   # Subparser for catalog command
   logging.debug("Constructing catalog subparser")
-  get_parser = subparsers.add_parser("catalog", help="Retrieve list of snippet names")
+  catalog_parser = subparsers.add_parser("catalog", help="Retrieve list of snippet names")
+  
+  # Subparser for search command
+  logging.debug("Constructing search subparser")
+  search_parser = subparsers.add_parser("search", help="Retrieve list of snippets matching text")
+  search_parser.add_argument("text", help="The text to search for")
+
   
   arguments = parser.parse_args(sys.argv[1:])
   
@@ -134,6 +149,11 @@ def main():
   elif command == "catalog":
     for keyword in catalog():
       print(keyword[0])
+  elif command == "search":
+    records = search(**arguments)
+    if records:
+      for k, v in records:
+        print(k, v)
       
   
 if __name__ == "__main__":
