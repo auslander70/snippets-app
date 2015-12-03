@@ -41,10 +41,9 @@ def get(name):
   
   Returns the snippet.
   """
-  cursor = connection.cursor()
-  command = "select keyword, message from snippets where keyword = %s"
-  cursor.execute(command, (name,))
-  record = cursor.fetchone()
+  with connection, connection.cursor() as cursor:
+    cursor.execute("select keyword, message from snippets where keyword = %s", (name, ))
+    record = cursor.fetchone()
 
   if not record:
     # No snippet was found with that name.
