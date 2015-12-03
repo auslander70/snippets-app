@@ -12,6 +12,8 @@ logging.debug("Connecting to PostgreSQL")
 connection = psycopg2.connect(database="snippets")
 logging.debug("Database connection established.")
 
+# TODO: alphabetize methods
+
 def catalog():
   """List snippet keywords (names)
   
@@ -143,6 +145,7 @@ def main():
   # Convert parsed arguments from Namespace to dictionary
   arguments = vars(arguments)
   command = arguments.pop("command")
+  # TODO: alphabetize if/elif construction
   if command == "put":
     name, snippet = put(**arguments)
     print("Stored {!r} as {!r}".format(snippet, name))
