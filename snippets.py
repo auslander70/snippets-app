@@ -12,7 +12,18 @@ logging.debug("Connecting to PostgreSQL")
 connection = psycopg2.connect(database="snippets")
 logging.debug("Database connection established.")
 
-
+def catalog():
+  """
+  List snippet keywords (names)
+  
+  Returns snippet names.
+  """
+  with connection, connection.cursor() as cursor:
+    cursor.execute("select keyword from snippets order by keyword")
+    keywords = cursor.fetchall()
+  return keywords
+  
+  
 def put(name, snippet):
     """
     Store a snippet with an associated name.
@@ -100,10 +111,15 @@ def main():
   put_parser.add_argument("name", help="The name of the snippet")
   put_parser.add_argument("snippet", help="The snippet text")
   
+  # Subparser for get command
   logging.debug("Construction get subparser")
   get_parser = subparsers.add_parser("get", help="Retrieve a snippet")
   get_parser.add_argument("name", help="The name of the snippet")
 
+  # Subparser for catalog command
+  logging.debug("Constructing catalog subparser")
+  get_parser = subparsers.add_parser("catalog", help="Retrieve list of snippet names")
+  
   arguments = parser.parse_args(sys.argv[1:])
   
   # Convert parsed arguments from Namespace to dictionary
@@ -115,6 +131,10 @@ def main():
   elif command == "get":
     snippet = get(**arguments)
     print("Retrieved snippet: {!r}".format(snippet))
+  elif command == "catalog":
+    for keyword in catalog():
+      print(keyword[0])
+      
   
 if __name__ == "__main__":
   main()
