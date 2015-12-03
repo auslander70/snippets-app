@@ -154,6 +154,8 @@ def main():
     if records:
       for k, v in records:
         print(k, v)
+    else:
+      print("No matching snippets.")
       
   
 if __name__ == "__main__":
